@@ -57,10 +57,17 @@ partnerRouter.route('/')
           })
           .catch((err) => next(err));
       })
-      .put((req, res) => {
-        res.statusCode = 403;
-        res.end("PUT operation not supported on /partners");
-      })
+      .put((req, res, next) => {
+        Partner.findByIdAndUpdate(req.params.partnerId, {
+            $set: req.body
+        }, { new: true })
+        .then(partner => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(partner);
+        })
+        .catch(err => next(err));
+    })
       .delete((req, res, next) => {
         Partner.deleteMany()
           .then((response) => {
