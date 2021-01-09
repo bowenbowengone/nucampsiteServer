@@ -73,40 +73,40 @@ campsiteRouter.route('/:campsiteId')
 });
 
 campsiteRouter.route('/:campsiteId/comments')
-.get((req, res, next) => {
-    Campsite.findById(req.params.campsiteId)
-    .then(campsite => {
-        if (campsite) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(campsite.comments);
-        } else {
-            err = new Error(`Campsite ${req.params.campsiteId} not found`);
-            err.status = 404;
-            return next(err);
-        }
-    })
-    .catch(err => next(err));
-})
-.post((req, res, next) => {
-    Campsite.findById(req.params.campsiteId)
-    .then(campsite => {
-        if (campsite) {
-            campsite.comments.push(req.body);
-            campsite.save()
-            .then(campsite => {
+    .get((req, res, next) => {
+        Campsite.findById(req.params.campsiteId)
+        .then(campsite => {
+            if (campsite) {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(campsite);
-            })
-            .catch(err => next(err));
-        } else {
-            err = new Error(`Campsite ${req.params.campsiteId} not found`);
-            err.status = 404;
-            return next(err);
-        }
-    })
-    .catch(err => next(err));
+                res.json(campsite.comments);
+            } else {
+                err = new Error(`Campsite ${req.params.campsiteId} not found`);
+                err.status = 404;
+                return next(err);
+            }
+        })
+        .catch(err => next(err));
+})
+    .post((req, res, next) => {
+        Campsite.findById(req.params.campsiteId)
+        .then(campsite => {
+            if (campsite) {
+                campsite.comments.push(req.body);
+                campsite.save()
+                .then(campsite => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(campsite);
+                })
+                .catch(err => next(err));
+            } else {
+                err = new Error(`Campsite ${req.params.campsiteId} not found`);
+                err.status = 404;
+                return next(err);
+            }
+        })
+        .catch(err => next(err));
 })
 .put((req, res) => {
     res.statusCode = 403;
