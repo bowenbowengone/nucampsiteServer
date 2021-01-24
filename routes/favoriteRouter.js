@@ -71,7 +71,7 @@ favoriteRouter.route("/")
   });
 
 favoriteRouter
-  .route("/campsiteId")
+  .route("/:campsiteId")
   .options(cors.corsWithOptions, authenticate.verifyUser, (req, res) =>
     res.sendStatus(200)
   )
@@ -129,7 +129,7 @@ favoriteRouter
           if (index >= 0) {
             favorite.campsites.splice(index, 1);
           }
-          Favorite.save()
+          favorite.save()
             .then(favorite => {
               console.log("Favorite Campsite Deleted!", favorite);
               res.statusCode = 200;
